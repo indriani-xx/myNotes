@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:coba/models/box_note.dart';
+import 'package:coba/widgets/box_note.dart';
 
-void main() => runApp(const MaterialApp(home: MyNotesPage()));
+void main() => runApp(
+    const MaterialApp(debugShowCheckedModeBanner: false, home: MyNotesPage()));
 
 class MyNotesPage extends StatefulWidget {
   const MyNotesPage({super.key});
@@ -12,8 +13,13 @@ class MyNotesPage extends StatefulWidget {
 
 class _MyNotesPageState extends State<MyNotesPage> {
   // 1. Simpan data catatan dalam List
-  List<Map<String, String>> notes = [
-    {"title": "My First Note", "content": "Konten pertama..."}
+  List<Map<String, dynamic>> notes = [
+    {
+      "id": DateTime.now().toString(),
+      "title": "My First Note",
+      "content": "Konten pertama...",
+      "createAt": DateTime.now()
+    }
   ];
 
   // 2. Fungsi untuk menambah catatan
@@ -31,6 +37,51 @@ class _MyNotesPageState extends State<MyNotesPage> {
       notes.removeWhere((note) => note['id'] == id);
     });
   } // Fungsi untuk menghapus catatan berdasarkan id
+
+  void _showAddNoteDialog() {
+    TextEditingController titleController = TextEditingController();
+    TextEditingController contentController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Tambah Catatan'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              TextField(
+                controller: contentController,
+                decoration: const InputDecoration(labelText: 'Content'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () => Navigator.pop(context),
+            ),
+            ElevatedButton(
+              child: const Text("Save"),
+              onPressed: () {
+                setState(() {
+                  notes.add({
+                    "id": DateTime.now().toString(),
+                    "title": titleController.text,
+                    "content": contentController.text,
+                    "createAt": DateTime.now()
+                  });
+                });
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +103,10 @@ class _MyNotesPageState extends State<MyNotesPage> {
           children: [
             // Loop data dari list 'notes'
             ...notes.map((data) => Note(
-                  id: DateTime.now().toString(),
+                  id: data['id']!, // pastikan id ada untuk setiap catatan
                   title: data['title']!,
                   content: data['content']!,
-                  createAt: DateTime.now(),
+                  createAt: data['createAt']!,
                   maxline: 2,
                   onDelete: () =>
                       _deleteNote(data['id']!), // memanggil fungsi hapus

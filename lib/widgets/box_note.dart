@@ -40,10 +40,6 @@ class Note extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 8,
-            width: 15,
-          ),
           Text(
             title,
             style: const TextStyle(
@@ -51,10 +47,6 @@ class Note extends StatelessWidget {
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
-          ),
-          const SizedBox(
-            height: 5,
-            width: 15,
           ),
           Text(
             content,
@@ -64,13 +56,15 @@ class Note extends StatelessWidget {
             overflow:
                 maxline != null ? TextOverflow.ellipsis : TextOverflow.visible,
           ),
-          Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                icon: const Icon(Icons.delete, size: 20),
-                onPressed: onDelete,
-                color: Colors.white,
-              )),
+          // Align(
+          //     alignment: Alignment.topRight,
+          //     child: IconButton(
+          //       icon: const Icon(Icons.delete, size: 20),
+          //       onPressed: onDelete,
+          //       color: Colors.white,
+          //     )),
+
+          const Spacer(), // INI YANG DORONG KE BAWAH
           Align(
               alignment: Alignment.bottomRight,
               child: Text(
