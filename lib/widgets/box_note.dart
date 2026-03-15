@@ -34,7 +34,10 @@ class Note extends StatelessWidget {
                     content: Text(content),
                     actions: [
                       TextButton.icon(
-                          onPressed: onDelete,
+                          onPressed: () {
+                            Navigator.pop(context);
+                            onDelete?.call();
+                          },
                           label: const Icon(Icons.delete,
                               size: 20, color: Colors.red)),
                       TextButton.icon(
@@ -78,7 +81,11 @@ class Note extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
+                overflow: maxline != null
+                    ? TextOverflow.ellipsis
+                    : TextOverflow.visible,
               ),
+
               Text(
                 content,
                 style: const TextStyle(
